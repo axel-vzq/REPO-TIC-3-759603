@@ -1,6 +1,7 @@
 name: MySQL Action
 
-on: push
+on:
+  workflow_dispatch:
 
 jobs:
   mysql-job:
@@ -10,8 +11,13 @@ jobs:
       mysql:
         image: mysql:latest
         env:
-          MYSQL_ROOT_PASSWORD: 123
+          MYSQL_ROOT_PASSWORD: 1234
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -p1234"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
       - name: Show databases
-        run: mysql -h 127.0.0.1 -u root -p123 -e "SHOW DATABASES;"
+        run: mysql -h 127.0.0.1 -u root -p1234 -e "SHOW DATABASES;"
